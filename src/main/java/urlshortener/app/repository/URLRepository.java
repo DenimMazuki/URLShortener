@@ -1,13 +1,17 @@
 package urlshortener.app.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
+import urlshortener.app.service.URLConverterService;
 
 @Repository
 public class URLRepository {
     private final Jedis jedis;
     private final String idKey;
     private final String urlKey;
+    private static final Logger LOGGER = LoggerFactory.getLogger(URLRepository.class);
 
     public URLRepository() {
         this.jedis = new Jedis();
@@ -23,16 +27,21 @@ public class URLRepository {
 
     public Long incrementID() {
         Long id = jedis.incr(idKey);
+        LOGGER.info("Incrementing ID: {}", id-1);
         return id - 1;
     }
 
     public void saveUrl(String key, String longUrl) {
-        System.out.println("SAVING AT: " + key);
+        LOGGER.info("Saving: {} at {}", longUrl, key);
         jedis.hset(urlKey, key, longUrl);
     }
 
-    public String getUrl(Long id) {
-        System.out.println("Retrieving AT: url:" + id);
+    public String getUrl(Long id) throws Exception {
+        LOGGER.info("Retrieving at {}", id);
+        String url = jedis.hget(urlKey, "url:"+id);
+        if (url == null) {
+            throw new Exception("URL at key" + id + " does not exist");
+        }
         return jedis.hget(urlKey, "url:"+id);
     }
 }
