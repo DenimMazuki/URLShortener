@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
-import urlshortener.app.service.URLConverterService;
 
 @Repository
 public class URLRepository {
@@ -39,9 +38,10 @@ public class URLRepository {
     public String getUrl(Long id) throws Exception {
         LOGGER.info("Retrieving at {}", id);
         String url = jedis.hget(urlKey, "url:"+id);
+        LOGGER.info("Retrieved {} at {}", url ,id);
         if (url == null) {
             throw new Exception("URL at key" + id + " does not exist");
         }
-        return jedis.hget(urlKey, "url:"+id);
+        return url;
     }
 }
