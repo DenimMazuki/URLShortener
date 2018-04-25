@@ -30,17 +30,29 @@ A Java class used to abstract URL Shortening and URL Retrieval process
 The entry point for the Spring application
 <br /> <br />
 <h2>To run:</h2>
-1. Start up Redis' Server <br />
-`redis-server`
-<br/>
-2. Build the project <br />
-`gradle build`
-<br />
-3. Run the project <br />
-`gradle run`
+1. Start up Redis' Server
+
+```
+redis-server
+```
+
+2. Build the project
+
+```
+gradle build
+```
+
+
+3. Run the project
+
+```
+gradle run
+```
+
 <br />
 By default the Server will run on localhost:8080/shortener <br/>
 To test, send POST Request to localhost:8080/shortener with a body of type application/json with body 
+
 ```
 {
   'url' : '<INSERT URL>'
