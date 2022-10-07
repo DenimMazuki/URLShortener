@@ -25,7 +25,7 @@ public class URLRepository {
     }
 
     public Long incrementID() {
-        Long id = jedis.incr(idKey);
+        long id = jedis.incr(idKey);
         LOGGER.info("Incrementing ID: {}", id-1);
         return id - 1;
     }
